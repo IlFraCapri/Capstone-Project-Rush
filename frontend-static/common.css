@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Syncopate:wght@400;700&display=swap');
+
+/* ==========================================================================
+   1. ROOT VARIABLES & RESET
+   ========================================================================== */
+:root {
+    --bg-color: #030303;
+    --surface-color: #0d0d0d;
+    --surface-light: #1a1a1a;
+    --primary-color: #ff0033; /* RUSH Red */
+    --primary-glow: rgba(255, 0, 51, 0.4);
+    --text-main: #ffffff;
+    --text-muted: #aaaaaa;
+    
+    --font-sans: 'Outfit', sans-serif;
+    --font-display: 'Syncopate', sans-serif;
+    
+    --transition-fast: 0.2s ease;
+    --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    --z-background: -10;
+    --z-content: 10;
+    --z-header: 100;
+    --z-menu: 200;
+    --z-modal: 300;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color var(--transition-smooth);
+}
+
+/* Scrollbar Custom */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-color); }
+::-webkit-scrollbar-thumb { background: var(--surface-light); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
+
+/* ==========================================================================
+   2. TYPOGRAPHY & UTILITIES
+   ========================================================================== */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 2px;
+}
+
+a { color: var(--text-main); text-decoration: none; transition: color var(--transition-fast); }
+a:hover { color: var(--primary-color); }
+
+.page-title {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 30px;
+    letter-spacing: 3px;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.page-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+/* Audio Effetto Sfondo (Red Light) */
+body.audio-active { background-color: #1a0005; }
+body.audio-active::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: radial-gradient(circle at center, rgba(255,0,51,0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: var(--z-background);
+}
+
+/* ==========================================================================
+   3. COMPONENTS (Header, Menu, Footer)
+   ========================================================================== */
+.top-bar {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 80px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; z-index: var(--z-header);
+    background: rgba(3, 3, 3, 0.6); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.logo-container { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; }
+.logo { height: 28px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2)); transition: transform var(--transition-smooth); }
+.logo-container:hover .logo { transform: scale(1.05); filter: drop-shadow(0 0 12px var(--primary-glow)); }
+
+.menu-icon { width: 30px; height: 20px; position: relative; cursor: pointer; z-index: calc(var(--z-menu) + 10); }
+.menu-icon .line { position: absolute; height: 1.5px; width: 100%; background: var(--text-main); border-radius: 1px; transition: var(--transition-smooth); }
+.menu-icon .line:nth-child(1) { top: 0; }
+.menu-icon .line:nth-child(2) { bottom: 0; width: 60%; right: 0; }
+.menu-icon:hover .line:nth-child(2) { width: 100%; }
+.menu-icon.open .line:nth-child(1) { top: 9px; transform: rotate(45deg); background: var(--primary-color); }
+.menu-icon.open .line:nth-child(2) { bottom: 9px; width: 100%; transform: rotate(-45deg); background: var(--primary-color); }
+
+.fullscreen-menu {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(3, 3, 3, 0.98); backdrop-filter: blur(20px);
+    z-index: var(--z-menu); display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; transition: opacity var(--transition-smooth), visibility var(--transition-smooth);
+}
+.fullscreen-menu.active { opacity: 1; visibility: visible; }
+.close-menu {
+    position: absolute; top: 20px; right: 40px; font-size: 60px;
+    color: var(--text-main); cursor: pointer; font-weight: 300; line-height: 1;
+}
+.fullscreen-menu nav ul { list-style: none; text-align: center; }
+.fullscreen-menu nav ul li { margin: 25px 0; overflow: hidden; }
+.fullscreen-menu nav ul li a {
+    font-family: var(--font-display); font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 900; color: var(--text-muted); opacity: 0; transform: translateY(100%);
+    transition: all var(--transition-smooth); display: inline-block;
+}
+.fullscreen-menu.active nav ul li a { opacity: 1; transform: translateY(0); }
+.fullscreen-menu nav ul li a:hover { color: var(--text-main); transform: scale(1.05); text-shadow: 0 0 20px rgba(255,255,255,0.3); }
+
+.audio-toggle { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.8rem; font-weight: 600; letter-spacing: 2px; }
+.speaker-icon { width: 24px; height: 24px; display: flex; align-items: center; }
+.sound-waves { opacity: 0; transform: scaleX(0); transition: var(--transition-smooth); }
+.audio-toggle.on .sound-waves { opacity: 1; transform: scaleX(1); animation: pulseWave 1s infinite alternate; }
+.audio-toggle.on { color: var(--primary-color); }
+@keyframes pulseWave { 0% { transform: scaleX(0.8); opacity: 0.5; } 100% { transform: scaleX(1.1); opacity: 1; } }
+
+.site-footer {
+    padding: 60px 40px 40px; background: var(--bg-color);
+    display: flex; flex-direction: column; align-items: center; gap: 30px;
+    position: relative; z-index: var(--z-content);
+}
+.footer-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); }
+.footer-socials { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+.footer-item { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; font-weight: 600; opacity: 0.6; transition: all var(--transition-fast); }
+.footer-item img { width: 20px; height: 20px; filter: brightness(0) invert(1); }
+.footer-item:hover { opacity: 1; transform: translateY(-2px); }
+.footer-since { font-size: 0.65rem; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
+
+.scroll-to-top {
+    position: fixed; bottom: 40px; right: 40px; width: 50px; height: 50px;
+    background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    z-index: var(--z-header); opacity: 0; visibility: hidden; transform: translateY(20px); transition: var(--transition-smooth);
+}
+.scroll-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+.scroll-to-top:hover { background: var(--primary-color); transform: translateY(-5px); box-shadow: 0 10px 20px var(--primary-glow); }
+.scroll-to-top svg { width: 24px; height: 24px; stroke: var(--text-main); }
+.scroll-to-top:hover svg { stroke: #fff; }
+
+@media (max-width: 768px) {
+    .top-bar { padding: 0 20px; height: 70px; }
+    .audio-text { display: none; }
+    .close-menu { top: 20px; right: 20px; font-size: 50px; }
+    .site-footer { padding: 40px 20px 30px; }
+    .footer-socials { flex-direction: column; align-items: center; gap: 20px; }
+}
