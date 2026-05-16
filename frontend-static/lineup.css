@@ -82,6 +82,7 @@
     background: rgba(255,255,255,0.1); border: none; color: #fff;
     font-size: 30px; width: 60px; height: 60px; border-radius: 50%;
     cursor: pointer; backdrop-filter: blur(5px); transition: var(--transition-fast);
+    z-index: 1000;
 }
 .modal-nav:hover { background: var(--primary-color); }
 .modal-nav.prev { left: -80px; }

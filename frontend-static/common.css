@@ -145,7 +145,17 @@ body.audio-active::before {
 .fullscreen-menu.active nav ul li a { opacity: 1; transform: translateY(0); }
 .fullscreen-menu nav ul li a:hover { color: var(--text-main); transform: scale(1.05); text-shadow: 0 0 20px rgba(255,255,255,0.3); }
 
-.audio-toggle { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.8rem; font-weight: 600; letter-spacing: 2px; }
+.audio-toggle { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    cursor: pointer; 
+    font-size: 0.8rem; 
+    font-weight: 600; 
+    letter-spacing: 2px; 
+    min-width: 40px;
+    justify-content: flex-end;
+}
 .speaker-icon { width: 24px; height: 24px; display: flex; align-items: center; }
 .sound-waves { opacity: 0; transform: scaleX(0); transition: var(--transition-smooth); }
 .audio-toggle.on .sound-waves { opacity: 1; transform: scaleX(1); animation: pulseWave 1s infinite alternate; }

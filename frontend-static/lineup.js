@@ -47,11 +47,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openModal(dj) {
         if (!modal) return;
-        if (!dj.media || dj.media.length === 0) {
-            currentDjMedia = [dj.image]; // Fallback if no media
-        } else {
-            currentDjMedia = dj.media;
+        
+        // Uniamo la foto principale con le foto della gallery (rimuovendo i duplicati)
+        let gallery = [];
+        if (dj.image) gallery.push(dj.image);
+        if (dj.media && Array.isArray(dj.media)) {
+            gallery = [...gallery, ...dj.media];
         }
+        
+        currentDjMedia = [...new Set(gallery)];
         currentModalIndex = 0;
         updateModalContent();
         modal.classList.add('active');
