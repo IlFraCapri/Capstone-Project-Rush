@@ -111,7 +111,9 @@ body.audio-active::before {
     align-items: center;
     padding: 0 40px; 
     z-index: var(--z-header);
-    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+    background: rgba(3, 3, 3, 0.6);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     transition: all 0.3s;
 }
 
@@ -157,7 +159,11 @@ body.audio-active::before {
     font-weight: 600; 
     letter-spacing: 2px; 
     min-width: 40px;
+    justify-self: end;
     justify-content: flex-end;
+    color: #fff;
+    position: relative;
+    z-index: 101;
 }
 .speaker-icon { width: 24px; height: 24px; display: flex; align-items: center; }
 .sound-waves { opacity: 0; transform: scaleX(0); transition: var(--transition-smooth); }
