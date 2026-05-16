@@ -48,14 +48,22 @@ document.addEventListener('DOMContentLoaded', () => {
     function openModal(dj) {
         if (!modal) return;
         
-        // Uniamo la foto principale con le foto della gallery (rimuovendo i duplicati)
         let gallery = [];
+        // Aggiungiamo l'immagine principale
         if (dj.image) gallery.push(dj.image);
+        
+        // Aggiungiamo i media extra se presenti
         if (dj.media && Array.isArray(dj.media)) {
-            gallery = [...gallery, ...dj.media];
+            dj.media.forEach(m => {
+                if (m && m.trim() !== "") gallery.push(m);
+            });
         }
         
-        currentDjMedia = [...new Set(gallery)];
+        // Rimuoviamo i duplicati mantenendo l'ordine
+        currentDjMedia = gallery.filter((item, index) => gallery.indexOf(item) === index);
+        
+        if (currentDjMedia.length === 0) return;
+        
         currentModalIndex = 0;
         updateModalContent();
         modal.classList.add('active');
